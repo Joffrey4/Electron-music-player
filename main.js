@@ -1,11 +1,16 @@
-// Control application life & create native browser window
+"use strict";
+
+// Imports
 const electron = require('electron');
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
+const dialog = electron.dialog;
 
+const fs = require('fs');
 const path = require('path');
 const url = require('url');
 
+// Main window declaration
 let mainWindow;
 
 function createWindow () {
@@ -18,7 +23,22 @@ function createWindow () {
     // Load the dev console
     mainWindow.webContents.openDevTools();
 
-    // join the index.html of the app
+    // Create a 'Sound Control' Menu
+    let template = [
+        {},
+        {
+            label: 'Sound Control',
+            accelerator: 'CommandOrControl+0',
+            click: function () {
+                openFolderDialog();
+            }
+        }
+    ];
+
+    let menu = electron.Menu.buildFromTemplate(template);
+    electron.Menu.setApplicationMenu(menu);
+
+    // Join the index.html of the app
     mainWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'app/index.html'),
         protocol: 'file:',
@@ -28,6 +48,14 @@ function createWindow () {
     // Emitted when the window is closed.
     mainWindow.on('closed', function () {
         mainWindow = null
+    })
+}
+
+function openFolderDialog() {
+    dialog.showOpenDialog(mainWindow, {
+        properties: ['openFile']
+    }, function (filePaths) {
+        mainWindow.webContents.send('modal-file-content', filePaths);
     })
 }
 
