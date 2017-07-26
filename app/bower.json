@@ -1,0 +1,24 @@
+{
+  "name": "MusicPlayer",
+  "homepage": "",
+  "authors": [
+    "Joffrey Bienvenu"
+  ],
+
+  "description": "",
+  "main": "",
+  "liscence": "MIT",
+  "ignore": [
+    "**/*",
+    "node_modules",
+    "bower_components"
+  ],
+
+  "dependencies": {
+    "angular": "1.6.5",
+    "bootstrap": "3.3.7",
+    "angular-route": "^1.5.8",
+    "howler": "2.0.4",
+    "angular-siri-wave": "*"
+  }
+}
