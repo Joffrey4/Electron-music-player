@@ -53,9 +53,27 @@ function createWindow () {
 
 function openFolderDialog() {
     dialog.showOpenDialog(mainWindow, {
-        properties: ['openFile']
-    }, function (filePaths) {
-        mainWindow.webContents.send('modal-file-content', filePaths);
+        properties: ['openDirectory']
+
+    }, function (filePath) {
+        fs.readdir(filePath[0], function (err, files) {
+
+            // Check if the files are .mp3
+            let arr = [];
+            for (let i = 0; i < files.length; i++) {
+
+                if (files[i].substring(files[i].length - 4) === ".mp3"
+                    || files[i].substring(files[i].length - 5) === ".flac") {
+                    arr.push(files[i])
+                }
+            }
+
+            let objToSend = {};
+            objToSend.files = arr;
+            objToSend.path = filePath[0];
+
+            mainWindow.webContents.send('modal-file-content', objToSend);
+        });
     })
 }
 
